@@ -22,3 +22,9 @@
 	branch = sheldon
 	shallow = true
 	update = rebase
+[submodule "submodule/lsp"]
+	path = submodule/lsp
+	url = git@github.com:flcker/ShellCfgSubmodule.git
+	branch = lsp
+	shallow = true
+	update = rebase
