@@ -362,8 +362,17 @@ Register-ArgumentCompleter -CommandName Switch-StarshipConfig -ParameterName Con
 # ── Init ──────────────────────────────────────────────────────────────────────
 Invoke-Expression (&starship init powershell)
 
-function Invoke-Starship-TransientFunction {
-    &starship module character
+function global:Invoke-Starship-TransientFunction {
+    $cwd = (Get-Location).Path
+    if ($cwd.StartsWith($HOME, [System.StringComparison]::OrdinalIgnoreCase)) {
+        $cwd = '~' + $cwd.Substring($HOME.Length)
+    }
+    $env:STARSHIP_TRANSIENT_DIR = $cwd.Replace('\', '/')
+    $env:STARSHIP_TRANSIENT_TIME = Get-Date -Format 'HH:mm'
+    $result = (&starship prompt --profile transient) -join "`n"
+    Remove-Item Env:STARSHIP_TRANSIENT_DIR -ErrorAction SilentlyContinue
+    Remove-Item Env:STARSHIP_TRANSIENT_TIME -ErrorAction SilentlyContinue
+    $result
 }
 
 Enable-TransientPrompt
