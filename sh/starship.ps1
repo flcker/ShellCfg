@@ -367,7 +367,23 @@ function global:Invoke-Starship-TransientFunction {
     if ($cwd.StartsWith($HOME, [System.StringComparison]::OrdinalIgnoreCase)) {
         $cwd = '~' + $cwd.Substring($HOME.Length)
     }
-    $env:STARSHIP_TRANSIENT_DIR = $cwd.Replace('\', '/')
+    $cwd = $cwd.Replace('\', '/')
+    $parts = $cwd.Split('/') | Where-Object { $_ -ne '' }
+
+    if ($parts.Count -gt 1) {
+        $truncated = $parts.Count -gt 4
+        if ($truncated) { $parts = @($parts[-4..-1]) }
+        $last = $parts[-1]
+        $ancestors = foreach ($p in $parts[0..($parts.Count - 2)]) {
+            if ($p.Length -le 1) { $p }
+            elseif ($p -match '^[A-Za-z]:$') { $p }
+            elseif ($p[0] -eq '.') { $p.Substring(0, [Math]::Min(2, $p.Length)) }
+            else { $p[0] }
+        }
+        $cwd = ($truncated ? '…/' : '') + ($ancestors -join '/') + '/' + $last
+    }
+
+    $env:STARSHIP_TRANSIENT_DIR = $cwd
     $env:STARSHIP_TRANSIENT_TIME = Get-Date -Format 'HH:mm'
     $result = (&starship prompt --profile transient) -join "`n"
     Remove-Item Env:STARSHIP_TRANSIENT_DIR -ErrorAction SilentlyContinue
