@@ -116,14 +116,21 @@ function _NewWingetShim {
         return [pscustomobject]@{ SourceDir = $SourceDir; ShimType = 'junction'; Items = $items }
     } else {
         foreach ($exe in $exeFiles) {
-            $cmdName = [System.IO.Path]::GetFileNameWithoutExtension($exe.Name) + '.cmd'
-            $cmdPath = Join-Path $ShimsDir $cmdName
+            $linkPath = Join-Path $ShimsDir $exe.Name
             if (-not $WhatIf) {
-                [System.IO.File]::WriteAllText($cmdPath, "@`"$($exe.FullName)`" %*", [System.Text.Encoding]::ASCII)
+                if (Test-Path $linkPath) { Remove-Item $linkPath -Force }
+                New-Item -ItemType HardLink -Path $linkPath -Target $exe.FullName -ErrorAction SilentlyContinue | Out-Null
+                if (-not (Test-Path $linkPath)) {
+                    $cmdName = [System.IO.Path]::GetFileNameWithoutExtension($exe.Name) + '.cmd'
+                    $cmdPath = Join-Path $ShimsDir $cmdName
+                    [System.IO.File]::WriteAllText($cmdPath, "@`"$($exe.FullName)`" %*", [System.Text.Encoding]::ASCII)
+                    $items += $cmdName
+                    continue
+                }
             }
-            $items += $cmdName
+            $items += $exe.Name
         }
-        return [pscustomobject]@{ SourceDir = $SourceDir; ShimType = 'cmd'; Items = $items }
+        return [pscustomobject]@{ SourceDir = $SourceDir; ShimType = 'hardlink'; Items = $items }
     }
 }
 
@@ -155,22 +162,16 @@ function global:Import-WingetShimPath {
     if (-not (Test-Path $shimsDir)) { return }
     if ($wpEntries -notcontains $shimsDir) { return }
 
-    $manifestPath = Join-Path $shimsDir '.manifest.json'
-    if (Test-Path $manifestPath) {
-        try {
-            $manifest = Get-Content $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
-            $curPath  = $env:Path -split ';' | Where-Object { $_ -ne '' }
-            $inject   = @($manifest | ForEach-Object { $_.sourcePath } |
-                Where-Object { $_ -and ($_ -notin $curPath) -and (Test-Path $_) })
-            if ($inject.Count -gt 0) {
-                $env:Path = ($curPath + $inject) -join ';'
-            }
-        } catch { }
-    }
-
     $junctions = @(Get-ChildItem -Path $shimsDir -Directory -Force -ErrorAction SilentlyContinue |
         Where-Object { $_.Attributes -band [System.IO.FileAttributes]::ReparsePoint })
     if ($junctions.Count -eq 0) { return }
+
+    $curPath = $env:Path -split ';' | Where-Object { $_ -ne '' }
+    $inject  = @($junctions | ForEach-Object { $_.FullName } |
+        Where-Object { $_ -notin $curPath })
+    if ($inject.Count -gt 0) {
+        $env:Path = ($curPath + $inject) -join ';'
+    }
 
     $broken = @($junctions | Where-Object {
         $target = $_.Target
