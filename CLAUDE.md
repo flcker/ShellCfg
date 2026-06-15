@@ -14,7 +14,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `plugins.zsh` — 设置 `SHELDON_CONFIG_FILE` 后调用 `eval "$(sheldon source)"`，由 sheldon 统一管理所有插件
 - `fzf.zsh` — 初始化 zsh 补全系统、Homebrew 环境变量和 fzf 快捷键（若 `~/.fzf.zsh` 不存在则回退到 `fzf --zsh`）
 - `aliases.zsh` — 根据已安装工具条件性定义别名（`lsd`、`bat`、`zoxide`、`lazygit`、`ghostty` 等）
-- `functions.zsh` — `color_echo`、`setproxy`/`unsetproxy`（代理地址 `127.0.0.1:7890`）、`ghostty_keybinds`
+- `functions.zsh` — `color_echo`、`proxyon`/`proxyoff`（代理地址 `127.0.0.1:7890`）、`ghostty_keybinds`
 - `brew.zsh` — `brewswitch` 函数，用于切换 Homebrew 镜像源（清华/USTC/官方）；直接执行时默认使用清华源
 - `nodejs.zsh` — `npmswitch` 函数，用于切换 npm 镜像源（官方/淘宝）；直接执行时默认使用淘宝源
 - `starship.zsh` — 启动时随机选取 `submodule/starship/starship_*.toml` 中的一个主题；`ssc` 命令切换主题，支持短别名（`c`/`pl`/`r` 等），`ssc -h` 列出所有主题和别名
@@ -45,7 +45,7 @@ source ~/.config/zsh/zshrc.zsh
 | `ssc [theme]` | 切换 starship 主题；短别名 `c` `pl` `npl` `ppl` `nfs` `pts` `r`；`ssc -h` 列出全部 |
 | `brewswitch [tsinghua\|ustc\|official\|list]` | 切换 Homebrew 镜像源 |
 | `npmswitch [official\|taobao\|list]` | 切换 npm 镜像源 |
-| `setproxy` / `unsetproxy` | 开启/关闭 HTTP/SOCKS5 代理（`127.0.0.1:7890`） |
+| `proxyon` / `proxyoff` | 开启/关闭 HTTP/SOCKS5 代理（`127.0.0.1:7890`） |
 | `rezsh` | 重新加载 `~/.zshrc` |
 | `z <dir>` / `zi <dir>` | 目录跳转 / 交互式跳转（zoxide） |
 | `x [-o <dir>] <file> [...]` | 解压，`-o` 指定输出目录 |

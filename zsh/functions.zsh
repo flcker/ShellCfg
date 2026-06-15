@@ -17,15 +17,15 @@ function color_echo() {
 
 alias cehco='color_echo' # 定义别名，方便使用 color_echo 函数
 
-# setproxy: 设置系统代理
-function setproxy() {
+# proxyon: 设置系统代理
+function proxyon() {
   export http_proxy="http://127.0.0.1:7890"
   export https_proxy="http://127.0.0.1:7890"
   export all_proxy="socks5://127.0.0.1:7890"
 }
 
-# unsetproxy: 取消系统代理
-function unsetproxy() {
+# proxyoff: 取消系统代理
+function proxyoff() {
   unset http_proxy
   unset https_proxy
   unset all_proxy

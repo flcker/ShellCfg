@@ -35,7 +35,7 @@ source ~/.config/zsh/zshrc.zsh
 | `fzf.zsh` | compinit 初始化、Homebrew 环境变量、fzf 快捷键 |
 | `starship.zsh` | 启动时随机选取主题；`ssc` 命令切换主题 |
 | `aliases.zsh` | 条件性别名（lsd、bat、zoxide、lazygit、ghostty 等） |
-| `functions.zsh` | `setproxy`/`unsetproxy`、`color_echo`、`ghostty_keybinds` |
+| `functions.zsh` | `proxyon`/`proxyoff`、`color_echo`、`ghostty_keybinds` |
 | `brew.zsh` | `brewswitch` 切换 Homebrew 镜像源 |
 | `nodejs.zsh` | `npmswitch` 切换 npm 镜像源 |
 | `archive.zsh` | `x` 解压 / `a` 打包压缩（格式由扩展名决定） |
@@ -65,7 +65,7 @@ git add submodule/sheldon && git commit -m "chore: update sheldon plugins"
 | `ssc [theme]` | 切换 starship 主题；短别名 `c` `pl` `npl` `ppl` `nfs` `pts` `r`；`ssc -h` 列出全部 |
 | `brewswitch [tsinghua\|ustc\|official\|list]` | 切换 Homebrew 镜像源 |
 | `npmswitch [official\|taobao\|list]` | 切换 npm 镜像源 |
-| `setproxy` / `unsetproxy` | 开启/关闭 HTTP/SOCKS5 代理（`127.0.0.1:7890`） |
+| `proxyon` / `proxyoff` | 开启/关闭 HTTP/SOCKS5 代理（`127.0.0.1:7890`） |
 | `rezsh` | 重新加载 `~/.zshrc` |
 | `z <dir>` / `zi <dir>` | 目录跳转 / 交互式跳转（zoxide） |
 | `x [-o <dir>] <file> [...]` | 解压，`-o` 指定输出目录 |
