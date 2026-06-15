@@ -20,11 +20,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `starship.zsh` — 启动时随机选取 `submodule/starship/starship_*.toml` 中的一个主题；`ssc` 命令切换主题，支持短别名（`c`/`pl`/`r` 等），`ssc -h` 列出所有主题和别名
 - `archive.zsh` — 归档两件套（`x`/`a`）：`extract [-o <dir>]` 解压、`archive [-C <dir>]` 打包或压缩；格式由扩展名决定；无参数显示用法
 - `nvim.zsh` — 通过 `-u` 参数让 nvim 加载 `submodule/nvim/init.lua`，并将 `vim`/`vi` 别名指向该包装函数
+- `cc-tools.zsh` — source `submodule/cc-tools/cc.zsh`，提供 `cc` 命令（模型切换 + CLI 版本管理）
 
 **子模块**（`submodule/`）：
 - `submodule/sheldon/` — sheldon 插件配置（`plugins.toml`）；`plugins.zsh` 通过 `SHELDON_CONFIG_FILE` 指向此文件。插件本体由 sheldon 在 `~/.local/share/sheldon/` 中管理（不入仓）
 - `submodule/starship/` — starship TOML 配置文件集合（`starship_*.toml`）；由 `starship.zsh` 在启动时随机选取，`ssc` 命令可手动切换
 - `submodule/nvim/` — 独立的 neovim 配置（`init.lua` + `lua/` 目录），通过 `-u` 参数加载，不影响系统 nvim 配置
+- `submodule/cc-tools/` — Claude Code 工具集（`cc.zsh` 统一入口、`cc-model-switch.zsh` 模型切换、`cc-update.zsh` 版本管理）
 
 ## 初始化
 
@@ -48,6 +50,10 @@ source ~/.config/zsh/zshrc.zsh
 | `z <dir>` / `zi <dir>` | 目录跳转 / 交互式跳转（zoxide） |
 | `x [-o <dir>] <file> [...]` | 解压，`-o` 指定输出目录 |
 | `a <output> [-C <dir>] [file ...]` | 打包或压缩，`-C` 指定源目录；`out.tar.gz` 归档，`out.gz` 压缩单文件 |
+| `cc` | 显示当前模型配置（无参数） |
+| `cc ds\|deepseek` / `glm` / `claude` / `gpt` | 切换 Claude Code 模型系列 |
+| `cc official` | 恢复 Claude 官方默认模型 |
+| `cc update [ver]` | 更新 Claude Code CLI；`--rollback` 回退、`--list` 列表、`--clean` 清理 |
 | `fuck` | 自动纠正上一条命令（thefuck） |
 
 ## 添加/修改插件
