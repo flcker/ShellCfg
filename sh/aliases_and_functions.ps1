@@ -2,7 +2,10 @@
 # functions and aliases
 
 # refresh profile without restart terminal
-function global:repwsh { . $PROFILE }
+function global:repwsh {
+    $scriptBlock = [ScriptBlock]::Create((Get-Content -Raw $PROFILE))
+    $ExecutionContext.InvokeCommand.InvokeScript($false, $scriptBlock, $null, $null)
+}
 
 
 # refresh user & system PATH (and all env vars) from registry without restarting session

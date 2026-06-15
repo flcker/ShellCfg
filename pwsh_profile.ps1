@@ -22,7 +22,8 @@ $psFiles = @(
     "nvim",         # 这个文件负责 Neovim 的环境变量和别名配置
     "coreutils",
     "config",
-    "zed"           # 这个文件负责 zed 编辑器的环境变量和别名配置
+    "zed",          # 这个文件负责 zed 编辑器的环境变量和别名配置
+    "cc-tools"      # Claude Code 工具集（模型切换、更新等）
 )
 
 # 循环加载每个 ps 文件
