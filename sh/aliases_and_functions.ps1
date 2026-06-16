@@ -3,8 +3,10 @@
 
 # refresh profile without restart terminal
 function global:repwsh {
+    # 使用 $true（local scope）确保新函数定义覆盖全局作用域中的旧版本
+    # 否则 InvokeScript($false) 会在子作用域中定义函数，被全局旧函数遮蔽
     $scriptBlock = [ScriptBlock]::Create((Get-Content -Raw $PROFILE))
-    $ExecutionContext.InvokeCommand.InvokeScript($false, $scriptBlock, $null, $null)
+    $ExecutionContext.InvokeCommand.InvokeScript($true, $scriptBlock, $null, $null)
 }
 
 
