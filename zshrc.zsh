@@ -10,6 +10,10 @@ ZSH_CONFIG_DIR="${${(%):-%x}:A:h}"
 ZSH_CONFIG_STARSHIP_DIR="$ZSH_CONFIG_DIR/submodule/starship"
 ZSH_CONFIG_NVIM_DIR="$ZSH_CONFIG_DIR/submodule/nvim"
 
+# proxy
+PROXY_HOST="127.0.0.1"
+PROXY_PORT="7890"
+
 # module loader
 ZSH_MODULE_DIR="$ZSH_CONFIG_DIR/zsh"
 

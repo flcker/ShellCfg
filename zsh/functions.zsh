@@ -17,19 +17,7 @@ function color_echo() {
 
 alias cehco='color_echo' # 定义别名，方便使用 color_echo 函数
 
-# proxyon: 设置系统代理
-function proxyon() {
-  export http_proxy="http://127.0.0.1:7890"
-  export https_proxy="http://127.0.0.1:7890"
-  export all_proxy="socks5://127.0.0.1:7890"
-}
-
-# proxyoff: 取消系统代理
-function proxyoff() {
-  unset http_proxy
-  unset https_proxy
-  unset all_proxy
-}
+# proxyon / proxyoff → aliases.zsh
 
 # ghostty common keybindings helper function
 # 这个函数用于显示 Ghostty 的常用快捷键，方便用户记忆和使用。

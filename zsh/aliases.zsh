@@ -14,6 +14,12 @@ if command -v ghostty >/dev/null 2>&1; then
     alias gty='ghostty'              # 使用 ghostty 替代 gty
 fi
 
+# proxy
+alias proxyon='export http_proxy="http://$PROXY_HOST:$PROXY_PORT" https_proxy="http://$PROXY_HOST:$PROXY_PORT" all_proxy="socks5://$PROXY_HOST:$PROXY_PORT"; echo "✓ proxy on: $PROXY_HOST:$PROXY_PORT"'
+alias proxyoff='unset http_proxy https_proxy all_proxy; echo "✓ proxy off"'
+alias gitproxyon='git config --global http.proxy "http://$PROXY_HOST:$PROXY_PORT"; git config --global https.proxy "http://$PROXY_HOST:$PROXY_PORT"; echo "✓ git proxy on: $PROXY_HOST:$PROXY_PORT"'
+alias gitproxyoff='git config --global --unset http.proxy; git config --global --unset https.proxy; echo "✓ git proxy off"'
+
 # git
 if command -v git >/dev/null 2>&1; then
     alias gp="git push"                # Git 快捷操作
