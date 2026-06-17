@@ -2,13 +2,12 @@
 # nvim
 # alias vim/vi
 if command -v nvim >/dev/null 2>&1; then
-    # 使用 nvim 替代 vim, 并加载submodule中的配置 `../submodule/nvim/init.lua`
+    # 加载 submodule 中的 nvim 配置 `../submodule/nvim/init.lua`
+    # SKIP_NVIM_SUBMODULE=1 可跳过子模块配置
     function nvim_fun() {
-        # 使用环境变量 ZSH_CONFIG_NVIM_DIR 作为 nvim 配置目录
-        local local_config="${ZSH_CONFIG_NVIM_DIR}/init.lua"
-        # echo "nvim local_config: $local_config"
-        if [ -f "$local_config" ]; then
-            command nvim -u "$local_config" "$@"
+        local cfg="${ZSH_CONFIG_NVIM_DIR}/init.lua"
+        if [[ -f "$cfg" && "$SKIP_NVIM_SUBMODULE" != "1" ]]; then
+            command nvim -u "$cfg" "$@"
         else
             command nvim "$@"
         fi
