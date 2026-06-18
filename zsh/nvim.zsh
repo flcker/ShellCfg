@@ -13,6 +13,7 @@ if command -v nvim >/dev/null 2>&1; then
         fi
     }
 
+    alias nvim='nvim_fun'
     alias vim='nvim_fun'
     alias vi='nvim_fun'
 fi
