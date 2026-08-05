@@ -17,14 +17,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `functions.zsh` — `color_echo`、`proxyon`/`proxyoff`（代理地址 `127.0.0.1:7890`）、`ghostty_keybinds`
 - `brew.zsh` — `brewswitch` 函数，用于切换 Homebrew 镜像源（清华/USTC/官方）；直接执行时默认使用清华源
 - `nodejs.zsh` — `npmswitch` 函数，用于切换 npm 镜像源（官方/淘宝）；直接执行时默认使用淘宝源
-- `starship.zsh` — 启动时随机选取 `submodule/starship/starship_*.toml` 中的一个主题；`ssc` 命令切换主题，支持短别名（`c`/`pl`/`r` 等），`ssc -h` 列出所有主题和别名
+- `starship.zsh` — 优先 source `submodule/starshipauto/engines/sh/starship-auto.sh`（sh engine 自动跑 `generate.py` 生成 `generated/*.toml`，启动随机选一个并定义 `ssc`）；无 python3 或无 starshipauto 时回退到从 `submodule/starship/starship_*.toml` 随机选取的旧逻辑
 - `archive.zsh` — 归档两件套（`x`/`a`）：`extract [-o <dir>]` 解压、`archive [-C <dir>]` 打包或压缩；格式由扩展名决定；无参数显示用法
 - `nvim.zsh` — 通过 `-u` 参数让 nvim 加载 `submodule/nvim/init.lua`，并将 `vim`/`vi` 别名指向该包装函数
 - `cc-tools.zsh` — source `submodule/cc-tools/cc.zsh`，提供 `cc` 命令（模型切换 + CLI 版本管理）
 
 **子模块**（`submodule/`）：
 - `submodule/sheldon/` — sheldon 插件配置（`plugins.toml`）；`plugins.zsh` 通过 `SHELDON_CONFIG_FILE` 指向此文件。插件本体由 sheldon 在 `~/.local/share/sheldon/` 中管理（不入仓）
-- `submodule/starship/` — starship TOML 配置文件集合（`starship_*.toml`）；由 `starship.zsh` 在启动时随机选取，`ssc` 命令可手动切换
+- `submodule/starship/` — starship 静态 TOML 配置集合（含 `starship_*.toml` 与 p10k 主题）；现作为 starshipauto engine 的"静态配置兄弟目录"，仍进入随机池
+- `submodule/starshipauto/` — 数据驱动的 starship 配置生成器（`data/` 碎片 + `generate.py` + `engines/sh/starship-auto.sh`）；`starship.zsh` 优先 source 其 sh engine，由 engine 自动生成 `generated/*.toml` 并接管随机池与 `ssc` 切换
 - `submodule/nvim/` — 独立的 neovim 配置（`init.lua` + `lua/` 目录），通过 `-u` 参数加载，不影响系统 nvim 配置
 - `submodule/cc-tools/` — Claude Code 工具集（`cc.zsh` 统一入口、`cc-model-switch.zsh` 模型切换、`cc-update.zsh` 版本管理）
 
@@ -42,7 +43,8 @@ source ~/.config/zsh/zshrc.zsh
 
 | 命令 | 说明 |
 |---|---|
-| `ssc [theme]` | 切换 starship 主题；短别名 `c` `pl` `npl` `ppl` `nfs` `pts` `r`；`ssc -h` 列出全部 |
+| `ssc [theme]` | 切换 starship 主题；支持 generated 名 / 静态名 / 别名；短别名 `c` `pl` `npl` `ppl` `nfs` `pts`（静态）+ `p10kr` `p10kc` `p10kl`（p10k）+ `d`（default）；`ssc random` / `ssc r` 重摇；`ssc --list` / `ssc -h` 列出全部 |
+| `ssc --rebuild` | 重跑 `generate.py` 重新生成 `generated/*.toml` 配置 |
 | `brewswitch [tsinghua\|ustc\|official\|list]` | 切换 Homebrew 镜像源 |
 | `npmswitch [official\|taobao\|list]` | 切换 npm 镜像源 |
 | `proxyon` / `proxyoff` | 开启/关闭 HTTP/SOCKS5 代理（`127.0.0.1:7890`） |
