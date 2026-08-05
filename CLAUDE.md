@@ -43,7 +43,7 @@ source ~/.config/zsh/zshrc.zsh
 
 | 命令 | 说明 |
 |---|---|
-| `ssc [theme]` | 切换 starship 主题；支持 generated 名 / 静态名 / 别名；短别名 `c` `pl` `npl` `ppl` `nfs` `pts`（静态）+ `p10kr` `p10kc` `p10kl`（p10k）+ `d`（default）；`ssc random` / `ssc r` 重摇；`ssc --list` / `ssc -h` 列出全部 |
+| `ssc [theme]` | 切换 starship 主题；支持 generated 名 / 静态名 / 别名；短别名 `c` `pl` `npl` `ppl` `nfs` `pts`（静态）+ `p10kr` `p10kc` `p10kl`（p10k）+ `d`（default）；`ssc random` / `ssc r` 重摇；`ssc --list` / `ssc -h` 列出全部；`ssc --lock [cfg]` / `ssc --unlock` 固定或解锁配置（跨 session） |
 | `ssc --rebuild` | 重跑 `generate.py` 重新生成 `generated/*.toml` 配置 |
 | `brewswitch [tsinghua\|ustc\|official\|list]` | 切换 Homebrew 镜像源 |
 | `npmswitch [official\|taobao\|list]` | 切换 npm 镜像源 |
