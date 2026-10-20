@@ -11,8 +11,9 @@
 git clone <repo> ~/.config/zsh
 cd ~/.config/zsh && git checkout zsh
 
-# 2. 拉取所有子模块
-git submodule update --init --recursive
+# 2. 拉取所有子模块（--checkout 必需：shallow + update=rebase，直接 update 会失败）
+git submodule update --init --recursive --checkout
+git submodule foreach 'git checkout -B $(git config -f $toplevel/.gitmodules submodule.$name.branch)'
 
 # 3. 安装依赖工具
 bash ~/.config/zsh/init.sh
@@ -40,6 +41,7 @@ source ~/.config/zsh/zshrc.zsh
 | `nodejs.zsh` | `npmswitch` 切换 npm 镜像源 |
 | `archive.zsh` | `x` 解压 / `a` 打包压缩（格式由扩展名决定） |
 | `nvim.zsh` | nvim 通过 `-u` 加载 submodule 配置，`vim`/`vi` 别名指向包装函数 |
+| `cc-tools.zsh` | source submodule/cc-tools/cc.zsh，提供 `cc` 命令（模型切换 + CLI 版本管理） |
 
 ---
 
@@ -78,8 +80,9 @@ git add submodule/sheldon && git commit -m "chore: update sheldon plugins"
 
 ```
 ~/.config/zsh/
-├── zshrc.zsh          # 入口，glob source zsh/*.zsh
-├── init.sh            # 依赖安装脚本
+├── zshrc.zsh            # 入口，glob source zsh/*.zsh
+├── init.sh              # 依赖安装脚本
+├── update-submodules.sh # 子模块更新脚本
 ├── zsh/
 │   ├── plugins.zsh    # sheldon 插件管理
 │   ├── fzf.zsh        # fzf 初始化
@@ -89,12 +92,16 @@ git add submodule/sheldon && git commit -m "chore: update sheldon plugins"
 │   ├── brew.zsh       # Homebrew 镜像源切换
 │   ├── nodejs.zsh     # npm 镜像源切换
 │   ├── archive.zsh    # 归档工具（x/a）
-│   └── nvim.zsh       # neovim 配置集成
+│   ├── nvim.zsh       # neovim 配置集成
+│   └── cc-tools.zsh   # cc 命令集成
 └── submodule/
     ├── sheldon/       # plugins.toml（sheldon 分支）
     ├── starship/      # starship_*.toml 主题文件
+    ├── starshipauto/  # 主题生成器（ssc 的 engine）
     ├── nvim/          # neovim 配置（init.lua）
-    └── git/           # git 配置
+    ├── cc-tools/      # cc 命令（模型切换 + CLI 版本管理）
+    ├── git/           # git 配置
+    └── lsp/           # LSP 安装/配置工具
 ```
 
 ---
@@ -103,6 +110,7 @@ git add submodule/sheldon && git commit -m "chore: update sheldon plugins"
 
 ```bash
 bash ~/.config/zsh/init.sh                  # 安装 sheldon、thefuck 等工具
-git submodule update --init --recursive     # 拉取插件配置
+git submodule update --init --recursive --checkout   # 拉取子模块（--checkout 必需）
+git submodule foreach 'git checkout -B $(git config -f $toplevel/.gitmodules submodule.$name.branch)'
 zsh                                         # sheldon 自动 clone 插件
 ```

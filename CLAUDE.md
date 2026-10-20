@@ -22,22 +22,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `nvim.zsh` — 通过 `-u` 参数让 nvim 加载 `submodule/nvim/init.lua`，并将 `vim`/`vi` 别名指向该包装函数
 - `cc-tools.zsh` — source `submodule/cc-tools/cc.zsh`，提供 `cc` 命令（模型切换 + CLI 版本管理）
 
-**子模块**（`submodule/`）：
+**子模块**（`submodule/`）：全部指向 `flcker/ShellCfgSubmodule` 仓库的不同分支（`.gitmodules` 按模块配置 `branch`，统一 `shallow = true` + `update = rebase`）：
 - `submodule/sheldon/` — sheldon 插件配置（`plugins.toml`）；`plugins.zsh` 通过 `SHELDON_CONFIG_FILE` 指向此文件。插件本体由 sheldon 在 `~/.local/share/sheldon/` 中管理（不入仓）
 - `submodule/starship/` — starship 静态 TOML 配置集合（含 `starship_*.toml` 与 p10k 主题）；现作为 starshipauto engine 的"静态配置兄弟目录"，仍进入随机池
 - `submodule/starshipauto/` — 数据驱动的 starship 配置生成器（`data/` 碎片 + `generate.py` + `engines/sh/starship-auto.sh`）；`starship.zsh` 优先 source 其 sh engine，由 engine 自动生成 `generated/*.toml` 并接管随机池与 `ssc` 切换
 - `submodule/nvim/` — 独立的 neovim 配置（`init.lua` + `lua/` 目录），通过 `-u` 参数加载，不影响系统 nvim 配置
 - `submodule/cc-tools/` — Claude Code 工具集（`cc.zsh` 统一入口、`cc-model-switch.zsh` 模型切换、`cc-update.zsh` 版本管理）
+- `submodule/git/` — git 配置（`config`）
+- `submodule/lsp/` — LSP 安装/配置工具（`lsp_install` / `lsp_configure` 的 sh 与 pwsh 版本，清单 `lsp_config.json`）
 
 ## 初始化
 
 ```bash
 bash ~/.config/zsh/init.sh                    # 安装所有依赖工具（含 sheldon、thefuck）
-git submodule update --init --recursive       # 拉取所有 submodule（含 sheldon 配置）
+# 拉取所有 submodule：--checkout 必需（shallow + update=rebase 且各分支与 main 历史
+# 无关，直接 update 会在 rebase 步失败）；第二行把各 submodule 切到自己的配置分支
+git submodule update --init --recursive --checkout
+git submodule foreach 'git checkout -B $(git config -f $toplevel/.gitmodules submodule.$name.branch)'
 # 在 ~/.zshrc 末尾添加：
 source ~/.config/zsh/zshrc.zsh
 # 首次启动 shell 时 sheldon 自动 clone 插件
 ```
+
+## 更新 submodule
+
+```bash
+./update-submodules.sh            # 各 submodule 拉配置分支最新（rebase），打印父仓指针提交命令
+./update-submodules.sh --commit   # 同上，并自动提交父仓指针（含之前遗留未提交的）
+```
+
+脚本会自动初始化未克隆的 submodule；单个失败（网络 / 脏工作区 / 冲突）跳过不中断，结尾汇总。
 
 ## 常用命令
 
@@ -57,6 +71,7 @@ source ~/.config/zsh/zshrc.zsh
 | `cc official` | 恢复 Claude 官方默认模型 |
 | `cc update [ver]` | 更新 Claude Code CLI；`--rollback` 回退、`--list` 列表、`--clean` 清理 |
 | `fuck` | 自动纠正上一条命令（thefuck） |
+| `./update-submodules.sh [--commit]` | 更新所有 submodule 到各配置分支最新；`--commit` 顺带提交父仓指针 |
 
 ## 添加/修改插件
 
