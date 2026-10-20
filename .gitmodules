@@ -10,6 +10,12 @@
 	branch = starship
 	shallow = true
 	update = rebase
+[submodule "submodule/starshipauto"]
+	path = submodule/starshipauto
+	url = git@github.com:flcker/ShellCfgSubmodule.git
+	branch = starshipauto
+	shallow = true
+	update = rebase
 [submodule "submodule/git"]
 	path = submodule/git
 	url = git@github.com:flcker/ShellCfgSubmodule.git
@@ -34,7 +40,3 @@
 	branch = cc-tools
 	shallow = true
 	update = rebase
-[submodule "submodule/starshipauto"]
-	path = submodule/starshipauto
-	url = git@github.com:flcker/ShellCfgSubmodule.git
-	branch = starshipauto
