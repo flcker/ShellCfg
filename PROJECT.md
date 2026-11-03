@@ -9,6 +9,7 @@ pwsh/
 ├── pwsh_profile.ps1              # 主入口，按序加载 sh/ 下所有子文件
 ├── init_profile_dependencies.ps1 # 一键安装终端配置依赖（PS 模块 + 终端工具）
 ├── devtools_install.ps1          # 一键安装开发工具（交互式选择或参数指定）
+├── update-submodules.ps1         # 更新所有 submodule 到各自配置分支最新
 ├── sh/
 │   ├── prompt.ps1                # 自定义提示符 & 窗口标题
 │   ├── starship.ps1              # starship 主题随机加载 & 切换

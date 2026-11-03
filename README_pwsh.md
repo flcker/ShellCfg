@@ -111,8 +111,9 @@ git submodule update --init --recursive
 
 **更新所有 submodule 到各分支最新：**
 
-```bash
-git submodule update --remote --merge
+```powershell
+.\update-submodules.ps1           # 更新并显示待提交的父仓指针
+.\update-submodules.ps1 -Commit   # 更新并自动提交父仓指针
 ```
 
 **新增工具配置：**

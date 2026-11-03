@@ -42,3 +42,5 @@
 | git | git alias & color 配置，通过 `[include]` 加载到 `~/.gitconfig` |
 
 新增工具：在 ShellCfgSubmodule 创建对应分支，在本仓库执行 `git submodule add -b <branch>`。
+
+PowerShell 分支可运行 `.\update-submodules.ps1` 更新全部 submodule；添加 `-Commit` 可同时提交父仓指针。
