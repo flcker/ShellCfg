@@ -71,7 +71,18 @@
 
 3. 重新启动 PowerShell 即可自动加载所有配置。
 
-4. starship 主题切换使用 `ssc` 命令，支持前缀匹配、类型筛选、序号选择、锁定配置：
+4. GitHub Git 代理：
+
+   ```powershell
+   gitproxyon   # 为 github.com 启用 Git HTTP/HTTPS/SSH 代理
+   gitproxyoff  # 移除 ShellCfg 管理的 GitHub 代理配置
+   ```
+
+   HTTP/HTTPS 使用 URL 级 Git 配置，存放于 ShellCfg 管理的 `~/.gitconfig.d/shellcfg-github-proxy.gitconfig`，不影响其他 Git 域名；SSH 使用 Git for Windows 自带的 `connect.exe`，经 `ssh.github.com:443` 连接，并写入 `~/.ssh/config.d/shellcfg-github-proxy.conf`。首次启用时会在 `~/.ssh/config` 顶部加入对应的 `Include`；关闭后保留这条无副作用的 SSH Include，供后续重新启用。
+
+   四个代理命令调用后都会以多行中文格式输出状态、作用范围和持久化信息；失败时逐条列出原因。`proxyon` / `proxyoff` 只影响当前 PowerShell 会话及之后启动的子进程；`gitproxyon` / `gitproxyoff` 影响当前 Windows 用户，配置跨终端和重启持久化且仅匹配 GitHub。`gitproxyon` 不会覆盖已有的同名 Git 配置或非 ShellCfg 管理的配置文件。若已执行 `proxyon`，其他域名仍可能通过环境变量走代理。
+
+5. starship 主题切换使用 `ssc` 命令，支持前缀匹配、类型筛选、序号选择、锁定配置：
 
    ```powershell
    ssc pl_round           # 前缀匹配切换
