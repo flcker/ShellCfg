@@ -31,10 +31,14 @@ Set-Alias -Name reenv -Value Update-Env -Scope Global
 
 
 # http proxy
+$global:PROXY_HOST = "127.0.0.1"
+$global:PROXY_PORT = "7890"
+
 function global:set_proxy_fun {
-    $env:HTTP_PROXY = "http://127.0.0.1:7890"
-    $env:HTTPS_PROXY = "http://127.0.0.1:7890"
-    # $env:ALL_PROXY = "socks5://127.0.0.1:7890"
+    $env:HTTP_PROXY = "http://$global:PROXY_HOST`:$global:PROXY_PORT"
+    $env:HTTPS_PROXY = "http://$global:PROXY_HOST`:$global:PROXY_PORT"
+    # $env:ALL_PROXY = "socks5://$global:PROXY_HOST`:$global:PROXY_PORT"
+    Write-Host "✓ proxy on: $global:PROXY_HOST`:$global:PROXY_PORT"
 }
 Set-Alias -Name proxyon -Value set_proxy_fun -Scope Global
 
@@ -42,8 +46,23 @@ function global:unset_proxy_fun {
     Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
     Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
     Remove-Item Env:ALL_PROXY -ErrorAction SilentlyContinue
+    Write-Host "✓ proxy off"
 }
 Set-Alias -Name proxyoff -Value unset_proxy_fun -Scope Global
+
+function global:git_proxy_on_fun {
+    git config --global http.proxy "http://$global:PROXY_HOST`:$global:PROXY_PORT"
+    git config --global https.proxy "http://$global:PROXY_HOST`:$global:PROXY_PORT"
+    Write-Host "✓ git proxy on: $global:PROXY_HOST`:$global:PROXY_PORT"
+}
+Set-Alias -Name gitproxyon -Value git_proxy_on_fun -Scope Global
+
+function global:git_proxy_off_fun {
+    git config --global --unset http.proxy
+    git config --global --unset https.proxy
+    Write-Host "✓ git proxy off"
+}
+Set-Alias -Name gitproxyoff -Value git_proxy_off_fun -Scope Global
 
 
 # Batch alias registration helper for direct command names.
