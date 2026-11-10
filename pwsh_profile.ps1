@@ -23,7 +23,8 @@ $psFiles = @(
     "coreutils",
     "config",
     "zed",          # 这个文件负责 zed 编辑器的环境变量和别名配置
-    "cc-tools"      # Claude Code 工具集（模型切换、更新等）
+    "cc-tools",     # Claude Code 工具集（模型切换、更新等）
+    "lsp"           # LSP 服务器安装与配置管理
 )
 
 # 循环加载每个 ps 文件
