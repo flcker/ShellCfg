@@ -30,6 +30,10 @@ Set-Alias -Name upenv -Value Update-Env -Scope Global
 Set-Alias -Name reenv -Value Update-Env -Scope Global
 
 
+# http proxy
+$global:PROXY_HOST = "127.0.0.1"
+$global:PROXY_PORT = "7890"
+
 function global:Write-ProxyCommandResult {
     param(
         [Parameter(Mandatory = $true)]
@@ -63,7 +67,7 @@ function global:Write-ProxyCommandResult {
 
 # current-session HTTP proxy
 function global:set_proxy_fun {
-    $proxyUrl = 'http://127.0.0.1:7890'
+    $proxyUrl = "http://$global:PROXY_HOST`:$global:PROXY_PORT"
     try {
         $env:HTTP_PROXY = $proxyUrl
         $env:HTTPS_PROXY = $proxyUrl
@@ -108,8 +112,8 @@ Set-Alias -Name proxyoff -Value unset_proxy_fun -Scope Global
 # GitHub-only Git proxy. HTTP(S) uses a managed Git include; SSH uses Git for
 # Windows' SOCKS connector through a managed OpenSSH include file.
 function global:gitproxyon {
-    $proxyHost = '127.0.0.1'
-    $proxyPort = 7890
+    $proxyHost = $global:PROXY_HOST
+    $proxyPort = $global:PROXY_PORT
     $proxyUrl = "http://${proxyHost}:${proxyPort}"
     $managedMarker = '# Managed by ShellCfg gitproxyon'
     $gitConfigKeys = @(
