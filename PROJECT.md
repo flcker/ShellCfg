@@ -38,7 +38,8 @@ pwsh/
 | `repwsh` | 热更新：重新加载 `$PROFILE` |
 | `refreshenv` | 从注册表刷新用户 & 系统环境变量（含 PATH），无需重启会话 |
 | `ssc [-h] [Config]` | 切换 starship 主题（custom/powerline/plaintextsymbols/nerdfontsymbols/pastelpowerline/default，支持缩写） |
-| `setproxy` / `unsetproxy` | 开关 HTTP 代理（127.0.0.1:7890） |
+| `proxyon` / `proxyoff` | 开关当前终端 HTTP 代理（127.0.0.1:7890） |
+| `gitproxyon` / `gitproxyoff` | 开关仅用于 GitHub 的 Git HTTP/HTTPS/SSH 代理；SSH 使用 Git for Windows 的 `connect.exe` |
 | `vim` / `vi` / `nvim` | 调用 Neovim，自动加载 submodule/nvim 配置 |
 | `dir` / `cp` / `mv` / `rm` / `mkdir` / `rmdir` / `touch` / `pwd` / `echo` | 检测到对应 coreutils `*.exe` 时，优先绑定（`ls` 由 lsd 接管，`cat` 由 bat 接管） |
 | `Get-CoreutilsCommands` / `gcu` / `gcuu` | `gcu` 按分类查看 coreutils 命令，支持 `-a` / `-c text` 这类短参数，`gcu <命令>` 查看 usage |
